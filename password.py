@@ -38,8 +38,18 @@ class Generator:
     def generate(self):
         try:
             length = int(self.length_entry.get())
-
-            if length > 0:
+            
+            # Length is negative
+            if length < 0:
+                self.pw_entry.delete(0, tk.END)
+                self.pw_entry.insert(0, 'Your length should not be negative')
+            
+            # None of the boxes are selected
+            elif self.want_upper.get() == 0 and self.want_lower.get() == 0 and self.want_numbers.get() == 0 and self.want_symbols.get() == 0:
+                self.pw_entry.delete(0, tk.END)
+                self.pw_entry.insert(0, 'Please select al least one box')
+                
+            else:
                 # If we don't select their boxes, they will be empty.
                 # So when we sum they are not included
                 upper = string.ascii_uppercase if self.want_upper.get() else ''
@@ -61,9 +71,6 @@ class Generator:
                 # We clear the entry and insert the password
                 self.pw_entry.delete(0, tk.END)
                 self.pw_entry.insert(0, ''.join(password))
-            else:
-                self.pw_entry.delete(0, tk.END)
-                self.pw_entry.insert(0, 'Your length should not be negative')
         except ValueError:
             pass
 
